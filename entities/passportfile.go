@@ -1,0 +1,8 @@
+package entities
+
+// This object represents a file uploaded to Telegram Passport. Currently all Telegram Passport files are in JPEG format when decrypted and don't exceed 10MB.
+type PassportFile struct {
+	FileId   string `json:"file_id"`   // Unique identifier for this file
+	FileSize int    `json:"file_size"` // File size
+	FileDate int    `json:"file_date"` // Unix time when the file was uploaded
+}
