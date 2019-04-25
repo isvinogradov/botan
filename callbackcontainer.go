@@ -1,8 +1,8 @@
 package botan
 
 import (
-	en "car-quiz-v3/entities"
 	"fmt"
+	en "github.com/isvinogradov/botan/entities"
 	"strings"
 )
 

@@ -1,7 +1,7 @@
 package botan
 
 import (
-	en "car-quiz-v3/entities"
+	en "github.com/isvinogradov/botan/entities"
 )
 
 // A simple method for testing your bot's auth token. Requires no parameters. Returns basic information

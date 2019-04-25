@@ -2,10 +2,10 @@ package botan
 
 import (
 	"bytes"
-	"car-quiz-v3/entities"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/isvinogradov/botan/entities"
 	"net/http"
 	"time"
 )

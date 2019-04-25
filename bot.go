@@ -1,9 +1,9 @@
 package botan
 
 import (
-	"car-quiz-v3/entities"
 	"errors"
 	"fmt"
+	"github.com/isvinogradov/botan/entities"
 	"math/rand"
 	"time"
 )
