@@ -1,4 +1,4 @@
-package telegrambot
+package botan
 
 import (
 	en "car-quiz-v3/entities"
