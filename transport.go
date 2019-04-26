@@ -42,7 +42,7 @@ func makePostRequest(timeout int, url string, payload interface{}, target interf
 		return errMakePost
 	}
 	if r.StatusCode != 200 {
-		fmt.Println(r.Body)  // todo check
+		fmt.Println(string(r.Body))  // todo check
 		return errors.New("POST status code != 200")
 	}
 
