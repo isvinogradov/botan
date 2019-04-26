@@ -8,3 +8,22 @@ type MessageEntity struct {
 	Url           string `json:"url,omitempty"`  // Optional. For “text_link” only, url that will be opened after user taps on the text
 	MentionedUser *User  `json:"user,omitempty"` // Optional. For “text_mention” only, the mentioned user
 }
+
+
+type MessageEntityType string
+
+const (
+	MessageEntityTypeMention     MessageEntityType = "mention"
+	MessageEntityTypeHashtag                       = "hashtag"
+	MessageEntityTypeCashtag                       = "cashtag"
+	MessageEntityTypeBotCommand                    = "bot_command"
+	MessageEntityTypeUrl                           = "url"
+	MessageEntityTypeEmail                         = "email"
+	MessageEntityTypePhoneNumber                   = "phone_number"
+	MessageEntityTypeBold                          = "bold"
+	MessageEntityTypeItalic                        = "italic"
+	MessageEntityTypeCode                          = "code"
+	MessageEntityTypePre                           = "pre"
+	MessageEntityTypeTextLink                      = "text_link"
+	MessageEntityTypeTextMention                   = "text_mention"
+)
