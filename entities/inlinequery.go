@@ -4,8 +4,8 @@ package entities
 // return some default or trending results.
 type InlineQuery struct {
 	Id       string   `json:"id"`                 // Unique identifier for this query
-	Sender   User     `json:"from"`               // Sender
-	Location Location `json:"location,omitempty"` // Optional. Sender location, only for bots that request user location
+	Sender   *User     `json:"from"`               // Sender
+	Location *Location `json:"location,omitempty"` // Optional. Sender location, only for bots that request user location
 	Query    string   `json:"query"`              // Text of the query (up to 512 characters)
 	Offset   string   `json:"offset"`             // Offset of the results to be returned, can be controlled by the bot
 }
