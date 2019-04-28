@@ -1,6 +1,6 @@
 package entities
 
-type UpdatesResponse struct {
+type GetUpdatesResponse struct {
 	OK      bool     `json:"ok"`
 	Updates []Update `json:"result"`
 }

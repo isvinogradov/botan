@@ -13,6 +13,23 @@ import (
 	"github.com/isvinogradov/botan/entities"
 )
 
+// Converts arbitrary data type to target struct
+func toStruct(data interface{}, target interface{}) error {
+	payload, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+	return json.Unmarshal(payload, &target)
+}
+
+// close HTTP response body
+func closeBody(r *http.Response) {
+	errRespBodyClose := r.Body.Close()
+	if errRespBodyClose != nil {
+		panic(errRespBodyClose)
+	}
+}
+
 type requestGate struct {
 	postTimeoutSeconds     int
 	getTimeoutSeconds      int
@@ -39,15 +56,6 @@ func (rg *requestGate) checkAndInit() error {
 	return nil
 }
 
-// Converts arbitrary data type to target struct
-func toStruct(data interface{}, target interface{}) error {
-	payload, err := json.Marshal(data)
-	if err != nil {
-		return err
-	}
-	return json.Unmarshal(payload, &target)
-}
-
 // Marshals payload to JSON and sends it to Telegram API server. Unmarshals response to target data struct.
 func (rg *requestGate) makePostRequest(url string, payload interface{}, target interface{}) error {
 	// marshal payload to JSON
@@ -61,12 +69,7 @@ func (rg *requestGate) makePostRequest(url string, payload interface{}, target i
 	//var httpCli = &http.Client{Timeout: time.Duration(rg.postTimeoutSeconds) * time.Second}
 	//r, errMakePost := httpCli.Post(url, "application/json", bytes.NewBuffer(jsonPayload))
 	r, errMakePost := rg.postClient.Post(url, "application/json", bytes.NewBuffer(jsonPayload))
-	defer func() {
-		errRespBodyClose := r.Body.Close()
-		if errRespBodyClose != nil {
-			panic(errRespBodyClose)
-		}
-	}()
+	defer closeBody(r)
 	if errMakePost != nil {
 		return errMakePost
 	}
@@ -117,22 +120,16 @@ func (rg *requestGate) makePostRequest(url string, payload interface{}, target i
 }
 
 // for getUpdates
-func getJson(url string, target interface{}) error {
-	// long polling; no timeout here because it is set in url query string
-	var httpCli = &http.Client{}
-
-	r, err := httpCli.Get(url)
-	defer func() {
-		errRespBodyClose := r.Body.Close()
-		if errRespBodyClose != nil {
-			panic(errRespBodyClose)
-		}
-	}()
+func (rg *requestGate) makeGetRequest(url string, target interface{}) error {
+	//var httpCli = &http.Client{}
+	//r, err := httpCli.Get(url)
+	r, err := rg.getClient.Get(url) // long polling
+	defer closeBody(r)
 	if err != nil {
 		return err
 	}
 
-	if r.StatusCode != 200 {
+	if r.StatusCode != http.StatusOK {
 		return errors.New("> wrong getUpdates response status code")
 	}
 	return json.NewDecoder(r.Body).Decode(target)

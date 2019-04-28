@@ -40,9 +40,9 @@ func NewBot(conf *config, callbacks *BotCallbacksContainer) (*Bot, error) {
 }
 
 // Get bulk of updates for bot
-func newUpdatesResponse(url string) (*entities.UpdatesResponse, error) {
-	var uResp entities.UpdatesResponse
-	if parseError := getJson(url, &uResp); parseError != nil {
+func (bot *Bot) fetchGetUpdatesResponse(url string) (*entities.GetUpdatesResponse, error) {
+	var uResp entities.GetUpdatesResponse
+	if parseError := bot.requestGate.makeGetRequest(url, &uResp); parseError != nil {
 		return nil, parseError
 	}
 	if !uResp.OK {
@@ -69,7 +69,7 @@ func (bot *Bot) GetUpdates() {
 		}
 
 		// fetch response
-		response, updRespErr := newUpdatesResponse(url)
+		response, updRespErr := bot.fetchGetUpdatesResponse(url)
 		if updRespErr != nil {
 			fmt.Println("got error in getUpdates; scheduling GetUpdates timeout...")
 			fmt.Println(updRespErr)
