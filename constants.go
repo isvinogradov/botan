@@ -25,6 +25,7 @@ const (
 	MethodSetChatTitle         = "setChatTitle"
 	MethodSendAnimation        = "sendAnimation"
 	MethodSendVoice            = "sendVoice"
+	MethodGetFile              = "getFile"
 )
 
 // TELEGRAM BOT API FORMATTING OPTIONS

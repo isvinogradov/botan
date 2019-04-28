@@ -368,3 +368,24 @@ func (bot *Bot) SendVoice(sendVoiceReq *SendVoiceRequest) (*en.Message, error) {
 	}
 	return &target, nil
 }
+
+// Use this method to get basic info about a file and prepare it for downloading. For the moment, bots can download files
+// of up to 20MB in size. On success, a File object is returned. The file can then be downloaded via the
+// link https://api.telegram.org/file/bot<token>/<file_path>, where <file_path> is taken from the response. It is guaranteed
+// that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile again.
+type GetFileRequest struct {
+	FileId string `json:"file_id"` // File identifier to get info about
+}
+
+func (bot *Bot) GetFile(getFileReq *GetFileRequest) (*en.File, error) {
+	var target en.File
+	if postErr := makePostRequest(
+		bot.config.postJsonTimeoutSeconds,
+		bot.urls.getFile,
+		getFileReq,
+		&target,
+	); postErr != nil {
+		return nil, postErr
+	}
+	return &target, nil
+}

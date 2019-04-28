@@ -24,6 +24,7 @@ type BotUrlContainer struct {
 	setChatTitle         string
 	sendAnimation        string
 	sendVoice            string
+	getFile              string
 }
 
 // pre-generated urls for all supported bot methods
@@ -61,5 +62,6 @@ func generateUrlsForBot(bot *Bot) {
 		setChatTitle:         fmt.Sprintf("%s%s", urlPrefix, MethodSetChatTitle),
 		sendAnimation:        fmt.Sprintf("%s%s", urlPrefix, MethodSendAnimation),
 		sendVoice:            fmt.Sprintf("%s%s", urlPrefix, MethodSendVoice),
+		getFile:              fmt.Sprintf("%s%s", urlPrefix, MethodGetFile),
 	}
 }

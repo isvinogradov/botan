@@ -9,4 +9,3 @@ Tools for creating bots using Telegram Bot API
   - proper `InputFile` struct for files (some workaround with interfaces?)
   - check chatAction/parseMode enums
   - review transport method
-  - add YAML parser?  
