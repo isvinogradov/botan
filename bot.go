@@ -3,9 +3,10 @@ package botan
 import (
 	"errors"
 	"fmt"
-	"github.com/isvinogradov/botan/entities"
 	"math/rand"
 	"time"
+
+	"github.com/isvinogradov/botan/entities"
 )
 
 type Bot struct {
@@ -76,9 +77,10 @@ func (bot *Bot) GetUpdates() {
 				// with to respective callback set. So, for instance, if we received a CallbackQuery in Update,
 				// we can be sure that OnCallbackQuery callback != nil in BotCallbacksContainer.
 
+				// todo pointer values in update?
 				if update.Message.Id != 0 {
 					cbErr = bot.callbacks.OnMessage(bot, &update.Message)
-				} else if update.CallbackQuery.Id != "" { // todo test pointer objects
+				} else if update.CallbackQuery.Id != "" {
 					cbErr = bot.callbacks.OnCallbackQuery(bot, &update.CallbackQuery)
 				} else if update.InlineQuery.Id != "" {
 					cbErr = bot.callbacks.OnInlineQuery(bot, &update.InlineQuery)

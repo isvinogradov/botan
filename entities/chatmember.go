@@ -2,7 +2,7 @@ package entities
 
 // This object contains information about one member of a chat.
 type ChatMember struct {
-	User                  User   `json:"user"`                                // Information about the user
+	User                  *User  `json:"user"`                                // Information about the user
 	Status                string `json:"status"`                              // The member's status in the chat. Can be “creator”, “administrator”, “member”, “restricted”, “left” or “kicked”
 	UntilDate             int    `json:"until_date,omitempty"`                // Optional. Restricted and kicked only. Date when restrictions will be lifted for this user, unix time
 	CanBeEdited           bool   `json:"can_be_edited,omitempty"`             // Optional. Administrators only. True, if the bot is allowed to edit administrator privileges of that user

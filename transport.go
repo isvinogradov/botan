@@ -5,9 +5,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/isvinogradov/botan/entities"
+	"io/ioutil"
 	"net/http"
 	"time"
+
+	"github.com/isvinogradov/botan/entities"
 )
 
 // Converts arbitrary data type to target struct
@@ -41,8 +43,13 @@ func makePostRequest(timeout int, url string, payload interface{}, target interf
 	if errMakePost != nil {
 		return errMakePost
 	}
-	if r.StatusCode != 200 {
-		fmt.Println(string(r.Body))  // todo check
+	if r.StatusCode != http.StatusOK {
+		bodyBytes, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(string(bodyBytes))
+
 		return errors.New("POST status code != 200")
 	}
 

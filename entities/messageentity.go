@@ -9,7 +9,6 @@ type MessageEntity struct {
 	MentionedUser *User  `json:"user,omitempty"` // Optional. For “text_mention” only, the mentioned user
 }
 
-
 type MessageEntityType string
 
 const (
