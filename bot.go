@@ -10,9 +10,10 @@ import (
 )
 
 type Bot struct {
-	config    *config
-	urls      *BotUrlContainer
-	callbacks *BotCallbacksContainer
+	config      *config
+	urls        *BotUrlContainer
+	callbacks   *BotCallbacksContainer
+	requestGate *requestGate
 }
 
 func NewBot(conf *config, callbacks *BotCallbacksContainer) (*Bot, error) {
@@ -22,8 +23,16 @@ func NewBot(conf *config, callbacks *BotCallbacksContainer) (*Bot, error) {
 	if callbacks == nil {
 		return nil, errors.New("nil callback container pointer")
 	}
+	requestGate := requestGate{
+		postTimeoutSeconds:     conf.postJsonTimeoutSeconds,
+		getTimeoutSeconds:      conf.longPollTimeoutSeconds + 1,
+		socks5ConnectionString: conf.socks5ConnectionString,
+	}
+	if errRG := requestGate.checkAndInit(); errRG != nil {
+		return nil, errRG
+	}
 
-	bot := Bot{config: conf, callbacks: callbacks}
+	bot := Bot{config: conf, callbacks: callbacks, requestGate: &requestGate}
 	bot.callbacks.checkAndInit()
 	generateUrlsForBot(&bot)
 	rand.Seed(time.Now().Unix()) // rand seed for GetRandomQuestion

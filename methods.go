@@ -8,8 +8,7 @@ import (
 // about the bot in form of a User object.
 func (bot *Bot) GetMe() (*en.User, error) {
 	var target en.User
-	if postErr := makePostRequest(
-		bot.config.postJsonTimeoutSeconds,
+	if postErr := bot.requestGate.makePostRequest(
 		bot.urls.getMe,
 		nil,
 		&target,
@@ -31,10 +30,10 @@ type SendMessageRequest struct {
 	DisableWebPagePreview bool            `json:"disable_web_page_preview,omitempty"` // Optional. Disables link previews for links in this message
 }
 
+// todo connect target and url (mapping)
 func (bot *Bot) SendMessage(msg *SendMessageRequest) (*en.Message, error) {
 	var target en.Message
-	if postErr := makePostRequest(
-		bot.config.postJsonTimeoutSeconds,
+	if postErr := bot.requestGate.makePostRequest(
 		bot.urls.sendMessage,
 		msg,
 		&target,
@@ -58,9 +57,8 @@ type SendPhotoRequest struct {
 
 func (bot *Bot) SendPhoto(sPhoto *SendPhotoRequest) (*en.Message, error) {
 	var target en.Message
-	if postErr := makePostRequest( // todo move bot to container as well
-		bot.config.postJsonTimeoutSeconds, // TODO: move to closure?
-		bot.urls.sendPhoto,                // todo map methods to struct types?
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.sendPhoto,
 		sPhoto,
 		&target,
 	); postErr != nil {
@@ -80,8 +78,7 @@ type AnswerCallbackQueryRequest struct {
 }
 
 func (bot *Bot) AnswerCallbackQuery(answerCbQ *AnswerCallbackQueryRequest) (bool, error) {
-	if postErr := makePostRequest(
-		bot.config.postJsonTimeoutSeconds,
+	if postErr := bot.requestGate.makePostRequest(
 		bot.urls.answerCallback,
 		answerCbQ,
 		nil,
@@ -102,8 +99,7 @@ type EditMessageReplyMarkupRequest struct {
 
 func (bot *Bot) EditMessageReplyMarkup(editReplyMkup *EditMessageReplyMarkupRequest) (*en.Message, error) {
 	var target en.Message
-	if postErr := makePostRequest(
-		bot.config.postJsonTimeoutSeconds,
+	if postErr := bot.requestGate.makePostRequest(
 		bot.urls.updateMessageMarkup,
 		editReplyMkup,
 		&target,
@@ -115,6 +111,7 @@ func (bot *Bot) EditMessageReplyMarkup(editReplyMkup *EditMessageReplyMarkupRequ
 
 // Use this method to send answers to an inline query. On success, True is returned. No more than 50 results
 // per query are allowed.
+// todo check Results pointer
 type AnswerInlineQueryRequest struct {
 	InlineQueryId     string                  `json:"inline_query_id"`               // Unique identifier for the answered query
 	Results           *[]en.InlineQueryResult `json:"results"`                       // A JSON-serialized array of results for the inline query
@@ -126,8 +123,7 @@ type AnswerInlineQueryRequest struct {
 }
 
 func (bot *Bot) AnswerInlineQuery(answer *AnswerInlineQueryRequest) (bool, error) {
-	if postErr := makePostRequest(
-		bot.config.postJsonTimeoutSeconds,
+	if postErr := bot.requestGate.makePostRequest(
 		bot.urls.answerInlineQuery,
 		answer,
 		nil,
@@ -151,8 +147,7 @@ type SendChatActionRequest struct {
 }
 
 func (bot *Bot) SendChatAction(chatAction *SendChatActionRequest) (bool, error) {
-	if postErr := makePostRequest(
-		bot.config.postJsonTimeoutSeconds,
+	if postErr := bot.requestGate.makePostRequest(
 		bot.urls.sendChatAction,
 		chatAction,
 		nil,
@@ -175,8 +170,7 @@ type SendPollRequest struct {
 
 func (bot *Bot) SendPoll(poll *SendPollRequest) (*en.Message, error) {
 	var target en.Message
-	if postErr := makePostRequest(
-		bot.config.postJsonTimeoutSeconds,
+	if postErr := bot.requestGate.makePostRequest(
 		bot.urls.sendPoll,
 		poll,
 		&target,
@@ -196,8 +190,7 @@ type StopPollRequest struct {
 
 func (bot *Bot) StopPoll(poll *StopPollRequest) (*en.Poll, error) {
 	var target en.Poll
-	if postErr := makePostRequest(
-		bot.config.postJsonTimeoutSeconds,
+	if postErr := bot.requestGate.makePostRequest(
 		bot.urls.stopPoll,
 		poll,
 		&target,
@@ -219,8 +212,7 @@ type SendStickerRequest struct {
 
 func (bot *Bot) SendSticker(stickerReq *SendStickerRequest) (*en.Message, error) {
 	var target en.Message
-	if postErr := makePostRequest(
-		bot.config.postJsonTimeoutSeconds,
+	if postErr := bot.requestGate.makePostRequest(
 		bot.urls.sendSticker,
 		stickerReq,
 		&target,
@@ -238,8 +230,7 @@ type GetChatRequest struct {
 
 func (bot *Bot) GetChat(getChatReq *GetChatRequest) (*en.Chat, error) {
 	var target en.Chat
-	if postErr := makePostRequest(
-		bot.config.postJsonTimeoutSeconds,
+	if postErr := bot.requestGate.makePostRequest(
 		bot.urls.getChat,
 		getChatReq,
 		&target,
@@ -258,8 +249,7 @@ type GetUserProfilePhotosRequest struct {
 
 func (bot *Bot) GetUserProfilePhotos(getPhotReq *GetUserProfilePhotosRequest) (*en.UserProfilePhotos, error) {
 	var target en.UserProfilePhotos
-	if postErr := makePostRequest(
-		bot.config.postJsonTimeoutSeconds,
+	if postErr := bot.requestGate.makePostRequest(
 		bot.urls.getUserProfilePhotos,
 		getPhotReq,
 		&target,
@@ -279,8 +269,7 @@ type ForwardMessageRequest struct {
 
 func (bot *Bot) ForwardMessage(fwdMsgReq *ForwardMessageRequest) (*en.Message, error) {
 	var target en.Message
-	if postErr := makePostRequest(
-		bot.config.postJsonTimeoutSeconds,
+	if postErr := bot.requestGate.makePostRequest(
 		bot.urls.forwardMessage,
 		fwdMsgReq,
 		&target,
@@ -300,8 +289,7 @@ type SetChatTitleRequest struct {
 }
 
 func (bot *Bot) SetChatTitle(setChatTReq *SetChatTitleRequest) (bool, error) {
-	if postErr := makePostRequest(
-		bot.config.postJsonTimeoutSeconds,
+	if postErr := bot.requestGate.makePostRequest(
 		bot.urls.setChatTitle,
 		setChatTReq,
 		nil,
@@ -330,8 +318,7 @@ type SendAnimationRequest struct {
 
 func (bot *Bot) SendAnimation(sendAnReq *SendAnimationRequest) (*en.Message, error) {
 	var target en.Message
-	if postErr := makePostRequest(
-		bot.config.postJsonTimeoutSeconds,
+	if postErr := bot.requestGate.makePostRequest(
 		bot.urls.sendAnimation,
 		sendAnReq,
 		&target,
@@ -358,8 +345,7 @@ type SendVoiceRequest struct {
 
 func (bot *Bot) SendVoice(sendVoiceReq *SendVoiceRequest) (*en.Message, error) {
 	var target en.Message
-	if postErr := makePostRequest(
-		bot.config.postJsonTimeoutSeconds,
+	if postErr := bot.requestGate.makePostRequest(
 		bot.urls.sendVoice,
 		sendVoiceReq,
 		&target,
@@ -379,8 +365,7 @@ type GetFileRequest struct {
 
 func (bot *Bot) GetFile(getFileReq *GetFileRequest) (*en.File, error) {
 	var target en.File
-	if postErr := makePostRequest(
-		bot.config.postJsonTimeoutSeconds,
+	if postErr := bot.requestGate.makePostRequest(
 		bot.urls.getFile,
 		getFileReq,
 		&target,

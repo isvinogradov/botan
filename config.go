@@ -1,6 +1,8 @@
 package botan
 
-import "errors"
+import (
+	"errors"
+)
 
 // telegram bot options and properties container
 type config struct {
@@ -8,6 +10,7 @@ type config struct {
 	postJsonTimeoutSeconds        int    // timeout for all bot methods (sendMessage etc.)
 	longPollTimeoutSeconds        int    // long polling timeout for getUpdates method
 	getUpdatesFailCooldownSeconds int    // sleep duration scheduled when getUpdates request fails
+	socks5ConnectionString        string // connections string if SOCKS5 proxy is used
 }
 
 func NewConfig(
@@ -15,6 +18,7 @@ func NewConfig(
 	postJsonTimeoutSec,
 	longPollTimeoutSec,
 	getUpdatesFailCooldownSec int,
+	socks5ConnectionString string,
 ) (*config, error) {
 	if token == "" {
 		return nil, errors.New("bot token not specified")
@@ -34,5 +38,6 @@ func NewConfig(
 		postJsonTimeoutSeconds:        postJsonTimeoutSec,
 		longPollTimeoutSeconds:        longPollTimeoutSec,
 		getUpdatesFailCooldownSeconds: getUpdatesFailCooldownSec,
+		socks5ConnectionString:        socks5ConnectionString,
 	}, nil
 }

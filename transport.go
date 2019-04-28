@@ -7,10 +7,37 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/isvinogradov/botan/entities"
 )
+
+type requestGate struct {
+	postTimeoutSeconds     int
+	getTimeoutSeconds      int
+	socks5ConnectionString string
+	postClient             *http.Client
+	getClient              *http.Client
+}
+
+func (rg *requestGate) checkAndInit() error {
+	var transport http.Transport
+	if rg.socks5ConnectionString == "" {
+		transport = http.Transport{Proxy: nil} // no proxy
+	} else {
+		proxyUrl, err := url.Parse(rg.socks5ConnectionString)
+		if err != nil {
+			return errors.New("failed to parse SOCKS5 connection string")
+		}
+		transport = http.Transport{Proxy: http.ProxyURL(proxyUrl)}
+	}
+
+	rg.postClient = &http.Client{Transport: &transport, Timeout: time.Duration(rg.postTimeoutSeconds) * time.Second}
+	rg.getClient = &http.Client{Transport: &transport, Timeout: time.Duration(rg.getTimeoutSeconds) * time.Second}
+
+	return nil
+}
 
 // Converts arbitrary data type to target struct
 func toStruct(data interface{}, target interface{}) error {
@@ -22,8 +49,7 @@ func toStruct(data interface{}, target interface{}) error {
 }
 
 // Marshals payload to JSON and sends it to Telegram API server. Unmarshals response to target data struct.
-// todo add proxy
-func makePostRequest(timeout int, url string, payload interface{}, target interface{}) error {
+func (rg *requestGate) makePostRequest(url string, payload interface{}, target interface{}) error {
 	// marshal payload to JSON
 	jsonPayload, marshalErr := json.Marshal(payload)
 	if marshalErr != nil {
@@ -32,8 +58,9 @@ func makePostRequest(timeout int, url string, payload interface{}, target interf
 	}
 
 	// make HTTP request
-	var httpCli = &http.Client{Timeout: time.Duration(timeout) * time.Second}
-	r, errMakePost := httpCli.Post(url, "application/json", bytes.NewBuffer(jsonPayload))
+	//var httpCli = &http.Client{Timeout: time.Duration(rg.postTimeoutSeconds) * time.Second}
+	//r, errMakePost := httpCli.Post(url, "application/json", bytes.NewBuffer(jsonPayload))
+	r, errMakePost := rg.postClient.Post(url, "application/json", bytes.NewBuffer(jsonPayload))
 	defer func() {
 		errRespBodyClose := r.Body.Close()
 		if errRespBodyClose != nil {
