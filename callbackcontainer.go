@@ -2,8 +2,9 @@ package botan
 
 import (
 	"fmt"
-	en "github.com/isvinogradov/botan/entities"
 	"strings"
+
+	en "github.com/isvinogradov/botan/entities"
 )
 
 type BotCallbacksContainer struct {

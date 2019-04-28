@@ -77,23 +77,22 @@ func (bot *Bot) GetUpdates() {
 				// with to respective callback set. So, for instance, if we received a CallbackQuery in Update,
 				// we can be sure that OnCallbackQuery callback != nil in BotCallbacksContainer.
 
-				// todo pointer values in update?
-				if update.Message.Id != 0 {
-					cbErr = bot.callbacks.OnMessage(bot, &update.Message)
-				} else if update.CallbackQuery.Id != "" {
-					cbErr = bot.callbacks.OnCallbackQuery(bot, &update.CallbackQuery)
-				} else if update.InlineQuery.Id != "" {
-					cbErr = bot.callbacks.OnInlineQuery(bot, &update.InlineQuery)
-				} else if update.EditedMessage.Id != 0 {
-					cbErr = bot.callbacks.OnEditedMessage(bot, &update.EditedMessage)
-				} else if update.ChannelPost.Id != 0 {
-					cbErr = bot.callbacks.OnChannelPost(bot, &update.ChannelPost)
-				} else if update.EditedChannelPost.Id != 0 {
-					cbErr = bot.callbacks.OnEditedChannelPost(bot, &update.EditedChannelPost)
-				} else if update.ChosenInlineResult.ResultId != "" {
-					cbErr = bot.callbacks.OnChosenInlineResult(bot, &update.ChosenInlineResult)
-				} else if update.Poll.Id != "" {
-					cbErr = bot.callbacks.OnPoll(bot, &update.Poll)
+				if update.Message != nil {
+					cbErr = bot.callbacks.OnMessage(bot, update.Message)
+				} else if update.CallbackQuery != nil {
+					cbErr = bot.callbacks.OnCallbackQuery(bot, update.CallbackQuery)
+				} else if update.InlineQuery != nil {
+					cbErr = bot.callbacks.OnInlineQuery(bot, update.InlineQuery)
+				} else if update.EditedMessage != nil {
+					cbErr = bot.callbacks.OnEditedMessage(bot, update.EditedMessage)
+				} else if update.ChannelPost != nil {
+					cbErr = bot.callbacks.OnChannelPost(bot, update.ChannelPost)
+				} else if update.EditedChannelPost != nil {
+					cbErr = bot.callbacks.OnEditedChannelPost(bot, update.EditedChannelPost)
+				} else if update.ChosenInlineResult != nil {
+					cbErr = bot.callbacks.OnChosenInlineResult(bot, update.ChosenInlineResult)
+				} else if update.Poll != nil {
+					cbErr = bot.callbacks.OnPoll(bot, update.Poll)
 				}
 
 				// handle callback error
