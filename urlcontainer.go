@@ -32,14 +32,14 @@ func generateUrlsForBot(bot *Bot) {
 	urlPrefix := fmt.Sprintf(
 		"%s/bot%s/",
 		TelegramApiHost,
-		bot.config.token,
+		bot.config.Token,
 	)
 
 	getUpdatesFullUrl := fmt.Sprintf(
 		"%s%s?timeout=%d&allowed_updates=%s",
 		urlPrefix,
 		MethodGetUpdates,
-		bot.config.longPollTimeoutSeconds,
+		bot.config.LongPollTimeoutSeconds,
 		bot.callbacks.generateAllowedUpdates(),
 	)
 

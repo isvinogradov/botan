@@ -9,27 +9,50 @@ import (
 	"github.com/isvinogradov/botan/entities"
 )
 
+const (
+	defaultPostJsonTimeoutSeconds        = 5
+	defaultLongPollTimeoutSeconds        = 300
+	defaultGetUpdatesFailCooldownSeconds = 10
+)
+
 type Bot struct {
-	config      *config
-	urls        *BotUrlContainer
+	config      *Config
+	urls        *BotUrlContainer // todo make unexported?
 	callbacks   *BotCallbacksContainer
 	requestGate *requestGate
 }
 
-func NewBot(conf *config, callbacks *BotCallbacksContainer) (*Bot, error) {
+func NewBot(conf *Config, callbacks *BotCallbacksContainer) (*Bot, error) {
+	// config checks and defaults
 	if conf == nil {
 		return nil, errors.New("nil config pointer")
 	}
-	if callbacks == nil {
-		return nil, errors.New("nil callback container pointer")
+
+	if conf.Token == "" {
+		return nil, errors.New("bot token not specified in config")
 	}
+	if conf.PostJsonTimeoutSeconds < 1 {
+		conf.PostJsonTimeoutSeconds = defaultPostJsonTimeoutSeconds
+	}
+	if conf.LongPollTimeoutSeconds < 1 {
+		conf.LongPollTimeoutSeconds = defaultLongPollTimeoutSeconds
+	}
+	if conf.GetUpdatesFailCooldownSeconds < 1 {
+		conf.GetUpdatesFailCooldownSeconds = defaultGetUpdatesFailCooldownSeconds
+	}
+
 	requestGate := requestGate{
-		postTimeoutSeconds:     conf.postJsonTimeoutSeconds,
-		getTimeoutSeconds:      conf.longPollTimeoutSeconds + 1,
-		socks5ConnectionString: conf.socks5ConnectionString,
+		postTimeoutSeconds:     conf.PostJsonTimeoutSeconds,
+		getTimeoutSeconds:      conf.LongPollTimeoutSeconds + 1,
+		socks5ConnectionString: conf.Socks5ConnectionString,
 	}
 	if errRG := requestGate.checkAndInit(); errRG != nil {
 		return nil, errRG
+	}
+
+	// callbacks check
+	if callbacks == nil {
+		return nil, errors.New("nil callback container pointer")
 	}
 
 	bot := Bot{config: conf, callbacks: callbacks, requestGate: &requestGate}
@@ -73,7 +96,7 @@ func (bot *Bot) GetUpdates() {
 		if updRespErr != nil {
 			fmt.Println("got error in getUpdates; scheduling GetUpdates timeout...")
 			fmt.Println(updRespErr)
-			time.Sleep(time.Duration(bot.config.getUpdatesFailCooldownSeconds) * time.Second)
+			time.Sleep(time.Duration(bot.config.GetUpdatesFailCooldownSeconds) * time.Second)
 		} else {
 			for _, update := range response.Updates {
 				fmt.Printf("Processing update %d\n", update.UpdateId)
