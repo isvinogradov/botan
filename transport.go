@@ -121,8 +121,6 @@ func (rg *requestGate) makePostRequest(url string, payload interface{}, target i
 
 // for getUpdates
 func (rg *requestGate) makeGetRequest(url string, target interface{}) error {
-	//var httpCli = &http.Client{}
-	//r, err := httpCli.Get(url)
 	r, err := rg.getClient.Get(url) // long polling
 	defer closeBody(r)
 	if err != nil {
