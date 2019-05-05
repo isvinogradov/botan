@@ -426,132 +426,168 @@ func (bot *Bot) SendDocument(sendDocReq *SendDocumentRequest) (*en.Message, erro
 
 type SendVideoRequest struct{}
 
-// Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document). On success, the sent Message is returned. Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.
-func (bot *Bot) SendVideo(svReq *SendVideoRequest) (zzz, error) {}
+// Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document).
+// On success, the sent Message is returned. Bots can currently send video files of up to 50 MB in size, this limit
+// may be changed in the future.
+func (bot *Bot) SendVideo(svReq *SendVideoRequest) (*en.Message, error) {}
 
 type SendVideoNoteRequest struct{}
 
-// As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this method to send video messages. On success, the sent Message is returned.
-func (bot *Bot) SendVideoNote(svnReq *SendVideoNoteRequest) (zzz, error) {}
+// As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this method to send
+// video messages. On success, the sent Message is returned.
+func (bot *Bot) SendVideoNote(svnReq *SendVideoNoteRequest) (*en.Message, error) {}
 
 type SendMediaGroupRequest struct{}
 
 // Use this method to send a group of photos or videos as an album. On success, an array of the sent Messages is returned.
-func (bot *Bot) SendMediaGroup(smgReq *SendMediaGroupRequest) (zzz, error) {}
+func (bot *Bot) SendMediaGroup(smgReq *SendMediaGroupRequest) ([]*en.Message, error) {}
 
 type EditMessageLiveLocationRequest struct{}
 
-// Use this method to edit live location messages. A location can be edited until its live_period expires or editing is explicitly disabled by a call to stopMessageLiveLocation. On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+// Use this method to edit live location messages. A location can be edited until its live_period expires or editing
+// is explicitly disabled by a call to stopMessageLiveLocation. On success, if the edited message was sent by the bot,
+// the edited Message is returned, otherwise True is returned.
 func (bot *Bot) EditMessageLiveLocation(emllReq *EditMessageLiveLocationRequest) (zzz, error) {}
 
 type StopMessageLiveLocationRequest struct{}
 
-// Use this method to stop updating a live location message before live_period expires. On success, if the message was sent by the bot, the sent Message is returned, otherwise True is returned.
+// Use this method to stop updating a live location message before live_period expires. On success, if the message was
+// sent by the bot, the sent Message is returned, otherwise True is returned.
 func (bot *Bot) StopMessageLiveLocation(smllReq *StopMessageLiveLocationRequest) (zzz, error) {}
 
 type SendVenueRequest struct{}
 
 // Use this method to send information about a venue. On success, the sent Message is returned.
-func (bot *Bot) SendVenue(svenReq *SendVenueRequest) (zzz, error) {}
+func (bot *Bot) SendVenue(svenReq *SendVenueRequest) (*en.Message, error) {}
 
 type SendContactRequest struct{}
 
 // Use this method to send phone contacts. On success, the sent Message is returned.
-func (bot *Bot) SendContact(sconReq *SendContactRequest) (zzz, error) {}
+func (bot *Bot) SendContact(sconReq *SendContactRequest) (*en.Message, error) {}
 
 type KickChatMemberRequest struct{}
 
-// Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the group on their own using invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
-func (bot *Bot) KickChatMember(kcmReq *KickChatMemberRequest) (zzz, error) {}
+// Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels,
+// the user will not be able to return to the group on their own using invite links, etc., unless unbanned first.
+// The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
+// Returns True on success.
+func (bot *Bot) KickChatMember(kcmReq *KickChatMemberRequest) (bool, error) {}
 
 type UnbanChatMemberRequest struct{}
 
-// Use this method to unban a previously kicked user in a supergroup or channel. The user will not return to the group or channel automatically, but will be able to join via link, etc. The bot must be an administrator for this to work. Returns True on success.
-func (bot *Bot) UnbanChatMember(ucmReq *UnbanChatMemberRequest) (zzz, error) {}
+// Use this method to unban a previously kicked user in a supergroup or channel. The user will not return to the group
+// or channel automatically, but will be able to join via link, etc. The bot must be an administrator for this to work.
+// Returns True on success.
+func (bot *Bot) UnbanChatMember(ucmReq *UnbanChatMemberRequest) (bool, error) {}
 
 type RestrictChatMemberRequest struct{}
 
-// Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate admin rights. Pass True for all boolean parameters to lift restrictions from a user. Returns True on success.
-func (bot *Bot) RestrictChatMember(rcmReq *RestrictChatMemberRequest) (zzz, error) {}
+// Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this
+// to work and must have the appropriate admin rights. Pass True for all boolean parameters to lift restrictions from
+// a user. Returns True on success.
+func (bot *Bot) RestrictChatMember(rcmReq *RestrictChatMemberRequest) (bool, error) {}
 
 type PromoteChatMemberRequest struct{}
 
-// Use this method to promote or demote a user in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Pass False for all boolean parameters to demote a user. Returns True on success.
-func (bot *Bot) PromoteChatMember(pcmReq *PromoteChatMemberRequest) (zzz, error) {}
+// Use this method to promote or demote a user in a supergroup or a channel. The bot must be an administrator in
+// the chat for this to work and must have the appropriate admin rights. Pass False for all boolean parameters to
+// demote a user. Returns True on success.
+func (bot *Bot) PromoteChatMember(pcmReq *PromoteChatMemberRequest) (bool, error) {}
 
 type ExportChatInviteLinkRequest struct{}
 
-// Use this method to generate a new invite link for a chat; any previously generated link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as String on success.
-func (bot *Bot) ExportChatInviteLink(ecilReq *ExportChatInviteLinkRequest) (zzz, error) {}
+// Use this method to generate a new invite link for a chat; any previously generated link is revoked. The bot must
+// be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite
+// link as String on success.
+func (bot *Bot) ExportChatInviteLink(ecilReq *ExportChatInviteLinkRequest) (string, error) {}
 
 type SetChatPhotoRequest struct{}
 
-// Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
-func (bot *Bot) SetChatPhoto(scpReq *SetChatPhotoRequest) (zzz, error) {}
+// Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be
+// an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+func (bot *Bot) SetChatPhoto(scpReq *SetChatPhotoRequest) (bool, error) {}
 
 type DeleteChatPhotoRequest struct{}
 
-// Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
-func (bot *Bot) DeleteChatPhoto(dcpReq *DeleteChatPhotoRequest) (zzz, error) {}
+// Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator
+// in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+func (bot *Bot) DeleteChatPhoto(dcpReq *DeleteChatPhotoRequest) (bool, error) {}
 
 type SetChatDescriptionRequest struct{}
 
-// Use this method to change the description of a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
-func (bot *Bot) SetChatDescription(scdReq *SetChatDescriptionRequest) (zzz, error) {}
+// Use this method to change the description of a supergroup or a channel. The bot must be an administrator in the chat
+// for this to work and must have the appropriate admin rights. Returns True on success.
+func (bot *Bot) SetChatDescription(scdReq *SetChatDescriptionRequest) (bool, error) {}
 
 type PinChatMessageRequest struct{}
 
-// Use this method to pin a message in a group, a supergroup, or a channel. The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’ admin right in the channel. Returns True on success.
-func (bot *Bot) PinChatMessage(picmReq *PinChatMessageRequest) (zzz, error) {}
+// Use this method to pin a message in a group, a supergroup, or a channel. The bot must be an administrator in the chat
+// for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’ admin
+// right in the channel. Returns True on success.
+func (bot *Bot) PinChatMessage(picmReq *PinChatMessageRequest) (bool, error) {}
 
 type UnpinChatMessageRequest struct{}
 
-// Use this method to unpin a message in a group, a supergroup, or a channel. The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’ admin right in the channel. Returns True on success.
-func (bot *Bot) UnpinChatMessage(upcmReq *UnpinChatMessageRequest) (zzz, error) {}
+// Use this method to unpin a message in a group, a supergroup, or a channel. The bot must be an administrator in the
+// chat for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’
+// admin right in the channel. Returns True on success.
+func (bot *Bot) UnpinChatMessage(upcmReq *UnpinChatMessageRequest) (bool, error) {}
 
 type LeaveChatRequest struct{}
 
 // Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
-func (bot *Bot) LeaveChat(lcmReq *LeaveChatRequest) (zzz, error) {}
+func (bot *Bot) LeaveChat(lcmReq *LeaveChatRequest) (bool, error) {}
 
 type GetChatAdministratorsRequest struct{}
 
-// Use this method to get a list of administrators in a chat. On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots. If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned.
-func (bot *Bot) GetChatAdministrators(gcaReq *GetChatAdministratorsRequest) (zzz, error) {}
+// Use this method to get a list of administrators in a chat. On success, returns an Array of ChatMember objects that
+// contains information about all chat administrators except other bots. If the chat is a group or a supergroup and
+// no administrators were appointed, only the creator will be returned.
+func (bot *Bot) GetChatAdministrators(gcaReq *GetChatAdministratorsRequest) ([]*en.ChatMember, error) {
+}
 
 type GetChatMembersCountRequest struct{}
 
 // Use this method to get the number of members in a chat. Returns Int on success.
-func (bot *Bot) GetChatMembersCount(gcmcReq *GetChatMembersCountRequest) (zzz, error) {}
+func (bot *Bot) GetChatMembersCount(gcmcReq *GetChatMembersCountRequest) (int, error) {}
 
 type GetChatMemberRequest struct{}
 
 // Use this method to get information about a member of a chat. Returns a ChatMember object on success.
-func (bot *Bot) GetChatMember(gcmemReq *GetChatMemberRequest) (zzz, error) {}
+func (bot *Bot) GetChatMember(gcmemReq *GetChatMemberRequest) (*en.ChatMember, error) {}
 
 type SetChatStickerSetRequest struct{}
 
-// Use this method to set a new group sticker set for a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success.
-func (bot *Bot) SetChatStickerSet(scstReq *SetChatStickerSetRequest) (zzz, error) {}
+// Use this method to set a new group sticker set for a supergroup. The bot must be an administrator in the chat for
+// this to work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in
+// getChat requests to check if the bot can use this method. Returns True on success.
+func (bot *Bot) SetChatStickerSet(scstReq *SetChatStickerSetRequest) (bool, error) {}
 
 type DeleteChatStickerSetRequest struct{}
 
-// Use this method to delete a group sticker set from a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in getChat requests to check if the bot can use this method. Returns True on success.
-func (bot *Bot) DeleteChatStickerSet(dcstReq *DeleteChatStickerSetRequest) (zzz, error) {}
+// Use this method to delete a group sticker set from a supergroup. The bot must be an administrator in the chat for
+// this to work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in
+// getChat requests to check if the bot can use this method. Returns True on success.
+func (bot *Bot) DeleteChatStickerSet(dcstReq *DeleteChatStickerSetRequest) (bool, error) {}
 
 type EditMessageTextRequest struct{}
 
-// Use this method to edit text and game messages. On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
+// Use this method to edit text and game messages. On success, if edited message is sent by the bot, the edited
+// Message is returned, otherwise True is returned.
 func (bot *Bot) EditMessageText(emtReq *EditMessageTextRequest) (zzz, error) {}
 
 type EditMessageCaptionRequest struct{}
 
-// Use this method to edit captions of messages. On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
+// Use this method to edit captions of messages. On success, if edited message is sent by the bot, the edited
+// Message is returned, otherwise True is returned.
 func (bot *Bot) EditMessageCaption(emcReq *EditMessageCaptionRequest) (zzz, error) {}
 
 type EditMessageMediaRequest struct{}
 
-// Use this method to edit animation, audio, document, photo, or video messages. If a message is a part of a message album, then it can be edited only to a photo or a video. Otherwise, message type can be changed arbitrarily. When inline message is edited, new file can't be uploaded. Use previously uploaded file via its file_id or specify a URL. On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+// Use this method to edit animation, audio, document, photo, or video messages. If a message is a part of a message
+// album, then it can be edited only to a photo or a video. Otherwise, message type can be changed arbitrarily. When
+// inline message is edited, new file can't be uploaded. Use previously uploaded file via its file_id or specify a URL.
+// On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
 func (bot *Bot) EditMessageMedia(emmReq *EditMessageMediaRequest) (zzz, error) {}
 
 type DeleteMessageRequest struct{}
@@ -564,34 +600,36 @@ type DeleteMessageRequest struct{}
 // - If the bot is an administrator of a group, it can delete any message there.
 // - If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.
 // Returns True on success.
-func (bot *Bot) DeleteMessage(dmReq *DeleteMessageRequest) (zzz, error) {}
+func (bot *Bot) DeleteMessage(dmReq *DeleteMessageRequest) (bool, error) {}
 
-type GetStickerSetRequest struct{}
+//type GetStickerSetRequest struct{}
+//
+//// Use this method to get a sticker set. On success, a StickerSet object is returned.
+//func (bot *Bot) GetStickerSet(gstsReq *GetStickerSetRequest) (*en.StickerSet, error) {}
 
-// Use this method to get a sticker set. On success, a StickerSet object is returned.
-func (bot *Bot) GetStickerSet(gstsReq *GetStickerSetRequest) (zzz, error) {}
-
-type UploadStickerFileRequest struct{}
-
-// Use this method to upload a .png file with a sticker for later use in createNewStickerSet and addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
-func (bot *Bot) UploadStickerFile(ustfReq *UploadStickerFileRequest) (zzz, error) {}
+//type UploadStickerFileRequest struct{}
+//
+//// Use this method to upload a .png file with a sticker for later use in createNewStickerSet and addStickerToSet
+//// methods (can be used multiple times). Returns the uploaded File on success.
+//func (bot *Bot) UploadStickerFile(ustfReq *UploadStickerFileRequest) (File, error) {}
 
 type CreateNewStickerSetRequest struct{}
 
-// Use this method to create new sticker set owned by a user. The bot will be able to edit the created sticker set. Returns True on success.
-func (bot *Bot) CreateNewStickerSet(cnstsReq *CreateNewStickerSetRequest) (zzz, error) {}
+// Use this method to create new sticker set owned by a user. The bot will be able to edit the created sticker set.
+// Returns True on success.
+func (bot *Bot) CreateNewStickerSet(cnstsReq *CreateNewStickerSetRequest) (bool, error) {}
 
 type AddStickerToSetRequest struct{}
 
 // Use this method to add a new sticker to a set created by the bot. Returns True on success.
-func (bot *Bot) AddStickerToSet(asttsReq *AddStickerToSetRequest) (zzz, error) {}
+func (bot *Bot) AddStickerToSet(asttsReq *AddStickerToSetRequest) (bool, error) {}
 
 type SetStickerPositionInSetRequest struct{}
 
 // Use this method to move a sticker in a set created by the bot to a specific position . Returns True on success.
-func (bot *Bot) SetStickerPositionInSet(sstpisReq *SetStickerPositionInSetRequest) (zzz, error) {}
+func (bot *Bot) SetStickerPositionInSet(sstpisReq *SetStickerPositionInSetRequest) (bool, error) {}
 
 type DeleteStickerFromSetRequest struct{}
 
 // Use this method to delete a sticker from a set created by the bot. Returns True on success.
-func (bot *Bot) DeleteStickerFromSet(dstfsReq *DeleteStickerFromSetRequest) (zzz, error) {}
+func (bot *Bot) DeleteStickerFromSet(dstfsReq *DeleteStickerFromSetRequest) (bool, error) {}
