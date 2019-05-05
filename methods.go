@@ -567,7 +567,18 @@ func (bot *Bot) RestrictChatMember(rcmReq *RestrictChatMemberRequest) (bool, err
 	return true, nil
 }
 
-type PromoteChatMemberRequest struct{}
+type PromoteChatMemberRequest struct {
+	ChatId             interface{} `json:"chat_id"`                        // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+	UserId             int         `json:"user_id"`                        // Unique identifier of the target user
+	CanChangeInfo      bool        `json:"can_change_info,omitempty"`      // Optional 	Pass True, if the administrator can change chat title, photo and other settings
+	CanPostMessages    bool        `json:"can_post_messages,omitempty"`    // Optional 	Pass True, if the administrator can create channel posts, channels only
+	CanEditMessages    bool        `json:"can_edit_messages,omitempty"`    // Optional 	Pass True, if the administrator can edit messages of other users and can pin messages, channels only
+	CanDeleteMessages  bool        `json:"can_delete_messages,omitempty"`  // Optional 	Pass True, if the administrator can delete messages of other users
+	CanInviteUsers     bool        `json:"can_invite_users,omitempty"`     // Optional 	Pass True, if the administrator can invite new users to the chat
+	CanRestrictMembers bool        `json:"can_restrict_members,omitempty"` // Optional 	Pass True, if the administrator can restrict, ban or unban chat members
+	CanPinMessages     bool        `json:"can_pin_messages,omitempty"`     // Optional 	Pass True, if the administrator can pin messages, supergroups only
+	CanPromoteMembers  bool        `json:"can_promote_members,omitempty"`  // Optional 	Pass True, if the administrator can add new administrators with a subset of his own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by him)
+}
 
 // Use this method to promote or demote a user in a supergroup or a channel. The bot must be an administrator in
 // the chat for this to work and must have the appropriate admin rights. Pass False for all boolean parameters to
@@ -615,7 +626,9 @@ func (bot *Bot) SetChatPhoto(scpReq *SetChatPhotoRequest) (bool, error) {
 	return true, nil
 }
 
-type DeleteChatPhotoRequest struct{}
+type DeleteChatPhotoRequest struct {
+	ChatId interface{} `json:"chat_id"` // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+}
 
 // Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator
 // in the chat for this to work and must have the appropriate admin rights. Returns True on success.
@@ -645,7 +658,11 @@ func (bot *Bot) SetChatDescription(scdReq *SetChatDescriptionRequest) (bool, err
 	return true, nil
 }
 
-type PinChatMessageRequest struct{}
+type PinChatMessageRequest struct {
+	ChatId              interface{} `json:"chat_id"`                        // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+	MessageId           int         `json:"message_id"`                     // Identifier of a message to pin
+	DisableNotification bool        `json:"disable_notification,omitempty"` // Optional 	Pass True, if it is not necessary to send a notification to all chat members about the new pinned message. Notifications are always disabled in channels.
+}
 
 // Use this method to pin a message in a group, a supergroup, or a channel. The bot must be an administrator in the chat
 // for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’ admin
@@ -661,7 +678,9 @@ func (bot *Bot) PinChatMessage(picmReq *PinChatMessageRequest) (bool, error) {
 	return true, nil
 }
 
-type UnpinChatMessageRequest struct{}
+type UnpinChatMessageRequest struct {
+	ChatId interface{} `json:"chat_id"` // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+}
 
 // Use this method to unpin a message in a group, a supergroup, or a channel. The bot must be an administrator in the
 // chat for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’
@@ -677,7 +696,9 @@ func (bot *Bot) UnpinChatMessage(upcmReq *UnpinChatMessageRequest) (bool, error)
 	return true, nil
 }
 
-type LeaveChatRequest struct{}
+type LeaveChatRequest struct {
+	ChatId interface{} `json:"chat_id"` // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+}
 
 // Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
 func (bot *Bot) LeaveChat(lcmReq *LeaveChatRequest) (bool, error) {
@@ -691,7 +712,9 @@ func (bot *Bot) LeaveChat(lcmReq *LeaveChatRequest) (bool, error) {
 	return true, nil
 }
 
-type GetChatAdministratorsRequest struct{}
+type GetChatAdministratorsRequest struct {
+	ChatId interface{} `json:"chat_id"` // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+}
 
 // Use this method to get a list of administrators in a chat. On success, returns an Array of ChatMember objects that
 // contains information about all chat administrators except other bots. If the chat is a group or a supergroup and
@@ -708,7 +731,9 @@ func (bot *Bot) GetChatAdministrators(gcaReq *GetChatAdministratorsRequest) ([]*
 	return target, nil
 }
 
-type GetChatMembersCountRequest struct{}
+type GetChatMembersCountRequest struct {
+	ChatId interface{} `json:"chat_id"` // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+}
 
 // Use this method to get the number of members in a chat. Returns Int on success.
 func (bot *Bot) GetChatMembersCount(gcmcReq *GetChatMembersCountRequest) (int, error) {
@@ -738,7 +763,10 @@ func (bot *Bot) GetChatMember(gcmemReq *GetChatMemberRequest) (*en.ChatMember, e
 	return &target, nil
 }
 
-type SetChatStickerSetRequest struct{}
+type SetChatStickerSetRequest struct {
+	ChatId         interface{} `json:"chat_id"`          // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+	StickerSetName string      `json:"sticker_set_name"` // Name of the sticker set to be set as the group sticker set
+}
 
 // Use this method to set a new group sticker set for a supergroup. The bot must be an administrator in the chat for
 // this to work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in
@@ -754,7 +782,9 @@ func (bot *Bot) SetChatStickerSet(scstReq *SetChatStickerSetRequest) (bool, erro
 	return true, nil
 }
 
-type DeleteChatStickerSetRequest struct{}
+type DeleteChatStickerSetRequest struct {
+	ChatId interface{} `json:"chat_id"` // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+}
 
 // Use this method to delete a group sticker set from a supergroup. The bot must be an administrator in the chat for
 // this to work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in
@@ -790,7 +820,10 @@ func (bot *Bot) DeleteChatStickerSet(dcstReq *DeleteChatStickerSetRequest) (bool
 //// On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
 //func (bot *Bot) EditMessageMedia(emmReq *EditMessageMediaRequest) (zzz, error) {}
 
-type DeleteMessageRequest struct{}
+type DeleteMessageRequest struct {
+	ChatId    interface{} `json:"chat_id"`    // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+	MessageId int         `json:"message_id"` // Identifier of the message to delete
+}
 
 // Use this method to delete a message, including service messages, with the following limitations:
 // - A message can only be deleted if it was sent less than 48 hours ago.
@@ -811,10 +844,22 @@ func (bot *Bot) DeleteMessage(dmReq *DeleteMessageRequest) (bool, error) {
 	return true, nil
 }
 
-//type GetStickerSetRequest struct{}
-//
-//// Use this method to get a sticker set. On success, a StickerSet object is returned.
-//func (bot *Bot) GetStickerSet(gstsReq *GetStickerSetRequest) (*en.StickerSet, error) {}
+type GetStickerSetRequest struct {
+	Name string `json:"name"` // Name of the sticker set
+}
+
+// Use this method to get a sticker set. On success, a StickerSet object is returned.
+func (bot *Bot) GetStickerSet(gstsReq *GetStickerSetRequest) (*en.StickerSet, error) {
+	var target en.StickerSet
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.getStickerSet,
+		gstsReq,
+		&target,
+	); postErr != nil {
+		return nil, postErr
+	}
+	return &target, nil
+}
 
 //type UploadStickerFileRequest struct{}
 //
@@ -851,7 +896,10 @@ func (bot *Bot) AddStickerToSet(asttsReq *AddStickerToSetRequest) (bool, error) 
 	return true, nil
 }
 
-type SetStickerPositionInSetRequest struct{}
+type SetStickerPositionInSetRequest struct {
+	Sticker  string `json:"sticker"`  // File identifier of the sticker
+	Position int    `json:"position"` // New sticker position in the set, zero-based
+}
 
 // Use this method to move a sticker in a set created by the bot to a specific position . Returns True on success.
 func (bot *Bot) SetStickerPositionInSet(sstpisReq *SetStickerPositionInSetRequest) (bool, error) {
@@ -865,7 +913,9 @@ func (bot *Bot) SetStickerPositionInSet(sstpisReq *SetStickerPositionInSetReques
 	return true, nil
 }
 
-type DeleteStickerFromSetRequest struct{}
+type DeleteStickerFromSetRequest struct {
+	Sticker string `json:"sticker"` // File identifier of the sticker
+}
 
 // Use this method to delete a sticker from a set created by the bot. Returns True on success.
 func (bot *Bot) DeleteStickerFromSet(dstfsReq *DeleteStickerFromSetRequest) (bool, error) {
