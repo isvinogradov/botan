@@ -66,8 +66,6 @@ func (rg *requestGate) makePostRequest(url string, payload interface{}, target i
 	}
 
 	// make HTTP request
-	//var httpCli = &http.Client{Timeout: time.Duration(rg.postTimeoutSeconds) * time.Second}
-	//r, errMakePost := httpCli.Post(url, "application/json", bytes.NewBuffer(jsonPayload))
 	r, errMakePost := rg.postClient.Post(url, "application/json", bytes.NewBuffer(jsonPayload))
 	defer closeBody(r)
 	if errMakePost != nil {
