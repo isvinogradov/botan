@@ -424,18 +424,39 @@ func (bot *Bot) SendDocument(sendDocReq *SendDocumentRequest) (*en.Message, erro
 	return &target, nil
 }
 
+////////////////////////////////////////////////////////
 type SendVideoRequest struct{}
 
 // Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document).
 // On success, the sent Message is returned. Bots can currently send video files of up to 50 MB in size, this limit
 // may be changed in the future.
-func (bot *Bot) SendVideo(svReq *SendVideoRequest) (*en.Message, error) {}
+func (bot *Bot) SendVideo(svReq *SendVideoRequest) (*en.Message, error) {
+	var target en.Message
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.sendVideo,
+		svReq,
+		&target,
+	); postErr != nil {
+		return nil, postErr
+	}
+	return &target, nil
+}
 
 type SendVideoNoteRequest struct{}
 
 // As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this method to send
 // video messages. On success, the sent Message is returned.
-func (bot *Bot) SendVideoNote(svnReq *SendVideoNoteRequest) (*en.Message, error) {}
+func (bot *Bot) SendVideoNote(svnReq *SendVideoNoteRequest) (*en.Message, error) {
+	var target en.Message
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.sendVideoNote,
+		svnReq,
+		&target,
+	); postErr != nil {
+		return nil, postErr
+	}
+	return &target, nil
+}
 
 type SendMediaGroupRequest struct{}
 
@@ -458,12 +479,32 @@ func (bot *Bot) StopMessageLiveLocation(smllReq *StopMessageLiveLocationRequest)
 type SendVenueRequest struct{}
 
 // Use this method to send information about a venue. On success, the sent Message is returned.
-func (bot *Bot) SendVenue(svenReq *SendVenueRequest) (*en.Message, error) {}
+func (bot *Bot) SendVenue(svenReq *SendVenueRequest) (*en.Message, error) {
+	var target en.Message
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.sendVenue,
+		svenReq,
+		&target,
+	); postErr != nil {
+		return nil, postErr
+	}
+	return &target, nil
+}
 
 type SendContactRequest struct{}
 
 // Use this method to send phone contacts. On success, the sent Message is returned.
-func (bot *Bot) SendContact(sconReq *SendContactRequest) (*en.Message, error) {}
+func (bot *Bot) SendContact(sconReq *SendContactRequest) (*en.Message, error) {
+	var target en.Message
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.sendContact,
+		sconReq,
+		&target,
+	); postErr != nil {
+		return nil, postErr
+	}
+	return &target, nil
+}
 
 type KickChatMemberRequest struct{}
 
@@ -471,28 +512,64 @@ type KickChatMemberRequest struct{}
 // the user will not be able to return to the group on their own using invite links, etc., unless unbanned first.
 // The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
 // Returns True on success.
-func (bot *Bot) KickChatMember(kcmReq *KickChatMemberRequest) (bool, error) {}
+func (bot *Bot) KickChatMember(kcmReq *KickChatMemberRequest) (bool, error) {
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.kickChatMember,
+		kcmReq,
+		nil,
+	); postErr != nil {
+		return false, postErr
+	}
+	return true, nil
+}
 
 type UnbanChatMemberRequest struct{}
 
 // Use this method to unban a previously kicked user in a supergroup or channel. The user will not return to the group
 // or channel automatically, but will be able to join via link, etc. The bot must be an administrator for this to work.
 // Returns True on success.
-func (bot *Bot) UnbanChatMember(ucmReq *UnbanChatMemberRequest) (bool, error) {}
+func (bot *Bot) UnbanChatMember(ucmReq *UnbanChatMemberRequest) (bool, error) {
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.unbanChatMember,
+		ucmReq,
+		nil,
+	); postErr != nil {
+		return false, postErr
+	}
+	return true, nil
+}
 
 type RestrictChatMemberRequest struct{}
 
 // Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this
 // to work and must have the appropriate admin rights. Pass True for all boolean parameters to lift restrictions from
 // a user. Returns True on success.
-func (bot *Bot) RestrictChatMember(rcmReq *RestrictChatMemberRequest) (bool, error) {}
+func (bot *Bot) RestrictChatMember(rcmReq *RestrictChatMemberRequest) (bool, error) {
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.restrictChatMember,
+		rcmReq,
+		nil,
+	); postErr != nil {
+		return false, postErr
+	}
+	return true, nil
+}
 
 type PromoteChatMemberRequest struct{}
 
 // Use this method to promote or demote a user in a supergroup or a channel. The bot must be an administrator in
 // the chat for this to work and must have the appropriate admin rights. Pass False for all boolean parameters to
 // demote a user. Returns True on success.
-func (bot *Bot) PromoteChatMember(pcmReq *PromoteChatMemberRequest) (bool, error) {}
+func (bot *Bot) PromoteChatMember(pcmReq *PromoteChatMemberRequest) (bool, error) {
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.promoteChatMember,
+		pcmReq,
+		nil,
+	); postErr != nil {
+		return false, postErr
+	}
+	return true, nil
+}
 
 type ExportChatInviteLinkRequest struct{}
 
@@ -505,38 +582,92 @@ type SetChatPhotoRequest struct{}
 
 // Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be
 // an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
-func (bot *Bot) SetChatPhoto(scpReq *SetChatPhotoRequest) (bool, error) {}
+func (bot *Bot) SetChatPhoto(scpReq *SetChatPhotoRequest) (bool, error) {
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.setChatPhoto,
+		scpReq,
+		nil,
+	); postErr != nil {
+		return false, postErr
+	}
+	return true, nil
+}
 
 type DeleteChatPhotoRequest struct{}
 
 // Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator
 // in the chat for this to work and must have the appropriate admin rights. Returns True on success.
-func (bot *Bot) DeleteChatPhoto(dcpReq *DeleteChatPhotoRequest) (bool, error) {}
+func (bot *Bot) DeleteChatPhoto(dcpReq *DeleteChatPhotoRequest) (bool, error) {
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.deleteChatPhoto,
+		dcpReq,
+		nil,
+	); postErr != nil {
+		return false, postErr
+	}
+	return true, nil
+}
 
 type SetChatDescriptionRequest struct{}
 
 // Use this method to change the description of a supergroup or a channel. The bot must be an administrator in the chat
 // for this to work and must have the appropriate admin rights. Returns True on success.
-func (bot *Bot) SetChatDescription(scdReq *SetChatDescriptionRequest) (bool, error) {}
+func (bot *Bot) SetChatDescription(scdReq *SetChatDescriptionRequest) (bool, error) {
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.setChatDescription,
+		scdReq,
+		nil,
+	); postErr != nil {
+		return false, postErr
+	}
+	return true, nil
+}
 
 type PinChatMessageRequest struct{}
 
 // Use this method to pin a message in a group, a supergroup, or a channel. The bot must be an administrator in the chat
 // for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’ admin
 // right in the channel. Returns True on success.
-func (bot *Bot) PinChatMessage(picmReq *PinChatMessageRequest) (bool, error) {}
+func (bot *Bot) PinChatMessage(picmReq *PinChatMessageRequest) (bool, error) {
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.pinChatMessage,
+		picmReq,
+		nil,
+	); postErr != nil {
+		return false, postErr
+	}
+	return true, nil
+}
 
 type UnpinChatMessageRequest struct{}
 
 // Use this method to unpin a message in a group, a supergroup, or a channel. The bot must be an administrator in the
 // chat for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’
 // admin right in the channel. Returns True on success.
-func (bot *Bot) UnpinChatMessage(upcmReq *UnpinChatMessageRequest) (bool, error) {}
+func (bot *Bot) UnpinChatMessage(upcmReq *UnpinChatMessageRequest) (bool, error) {
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.unpinChatMessage,
+		upcmReq,
+		nil,
+	); postErr != nil {
+		return false, postErr
+	}
+	return true, nil
+}
 
 type LeaveChatRequest struct{}
 
 // Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
-func (bot *Bot) LeaveChat(lcmReq *LeaveChatRequest) (bool, error) {}
+func (bot *Bot) LeaveChat(lcmReq *LeaveChatRequest) (bool, error) {
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.leaveChat,
+		lcmReq,
+		nil,
+	); postErr != nil {
+		return false, postErr
+	}
+	return true, nil
+}
 
 type GetChatAdministratorsRequest struct{}
 
@@ -561,14 +692,32 @@ type SetChatStickerSetRequest struct{}
 // Use this method to set a new group sticker set for a supergroup. The bot must be an administrator in the chat for
 // this to work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in
 // getChat requests to check if the bot can use this method. Returns True on success.
-func (bot *Bot) SetChatStickerSet(scstReq *SetChatStickerSetRequest) (bool, error) {}
+func (bot *Bot) SetChatStickerSet(scstReq *SetChatStickerSetRequest) (bool, error) {
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.setChatStickerSet,
+		scstReq,
+		nil,
+	); postErr != nil {
+		return false, postErr
+	}
+	return true, nil
+}
 
 type DeleteChatStickerSetRequest struct{}
 
 // Use this method to delete a group sticker set from a supergroup. The bot must be an administrator in the chat for
 // this to work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in
 // getChat requests to check if the bot can use this method. Returns True on success.
-func (bot *Bot) DeleteChatStickerSet(dcstReq *DeleteChatStickerSetRequest) (bool, error) {}
+func (bot *Bot) DeleteChatStickerSet(dcstReq *DeleteChatStickerSetRequest) (bool, error) {
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.deleteChatStickerSet,
+		dcstReq,
+		nil,
+	); postErr != nil {
+		return false, postErr
+	}
+	return true, nil
+}
 
 type EditMessageTextRequest struct{}
 
@@ -600,7 +749,16 @@ type DeleteMessageRequest struct{}
 // - If the bot is an administrator of a group, it can delete any message there.
 // - If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.
 // Returns True on success.
-func (bot *Bot) DeleteMessage(dmReq *DeleteMessageRequest) (bool, error) {}
+func (bot *Bot) DeleteMessage(dmReq *DeleteMessageRequest) (bool, error) {
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.deleteMessage,
+		dmReq,
+		nil,
+	); postErr != nil {
+		return false, postErr
+	}
+	return true, nil
+}
 
 //type GetStickerSetRequest struct{}
 //
@@ -617,19 +775,55 @@ type CreateNewStickerSetRequest struct{}
 
 // Use this method to create new sticker set owned by a user. The bot will be able to edit the created sticker set.
 // Returns True on success.
-func (bot *Bot) CreateNewStickerSet(cnstsReq *CreateNewStickerSetRequest) (bool, error) {}
+func (bot *Bot) CreateNewStickerSet(cnstsReq *CreateNewStickerSetRequest) (bool, error) {
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.createNewStickerSet,
+		cnstsReq,
+		nil,
+	); postErr != nil {
+		return false, postErr
+	}
+	return true, nil
+}
 
 type AddStickerToSetRequest struct{}
 
 // Use this method to add a new sticker to a set created by the bot. Returns True on success.
-func (bot *Bot) AddStickerToSet(asttsReq *AddStickerToSetRequest) (bool, error) {}
+func (bot *Bot) AddStickerToSet(asttsReq *AddStickerToSetRequest) (bool, error) {
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.addStickerToSet,
+		asttsReq,
+		nil,
+	); postErr != nil {
+		return false, postErr
+	}
+	return true, nil
+}
 
 type SetStickerPositionInSetRequest struct{}
 
 // Use this method to move a sticker in a set created by the bot to a specific position . Returns True on success.
-func (bot *Bot) SetStickerPositionInSet(sstpisReq *SetStickerPositionInSetRequest) (bool, error) {}
+func (bot *Bot) SetStickerPositionInSet(sstpisReq *SetStickerPositionInSetRequest) (bool, error) {
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.setStickerPositionInSet,
+		sstpisReq,
+		nil,
+	); postErr != nil {
+		return false, postErr
+	}
+	return true, nil
+}
 
 type DeleteStickerFromSetRequest struct{}
 
 // Use this method to delete a sticker from a set created by the bot. Returns True on success.
-func (bot *Bot) DeleteStickerFromSet(dstfsReq *DeleteStickerFromSetRequest) (bool, error) {}
+func (bot *Bot) DeleteStickerFromSet(dstfsReq *DeleteStickerFromSetRequest) (bool, error) {
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.deleteStickerFromSet,
+		dstfsReq,
+		nil,
+	); postErr != nil {
+		return false, postErr
+	}
+	return true, nil
+}
