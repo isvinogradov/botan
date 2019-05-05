@@ -26,6 +26,8 @@ const (
 	MethodSendAnimation        = "sendAnimation"
 	MethodSendVoice            = "sendVoice"
 	MethodGetFile              = "getFile"
+	MethodSendLocation         = "sendLocation"
+	MethodSendDocument         = "sendDocument"
 )
 
 // TELEGRAM BOT API FORMATTING OPTIONS
