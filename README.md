@@ -8,7 +8,8 @@ Tools for creating bots using Telegram Bot API
   - add support for proxy in `transport` -> TEST IT
 
 ### TODO
-  - send HTTP requests in goroutines (what for?)
-  - proper `InputFile` struct for files (some workaround with interfaces?)
-  - check `chatAction`/`parseMode` enums
-  - review transport method
+ - add all methods and entities 
+ - send HTTP requests in goroutines (what for?)
+ - proper `InputFile` struct for files (some workaround with interfaces?)
+ - check `chatAction`/`parseMode` enums
+ - review transport method

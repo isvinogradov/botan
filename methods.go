@@ -425,6 +425,8 @@ func (bot *Bot) SendDocument(sendDocReq *SendDocumentRequest) (*en.Message, erro
 }
 
 ////////////////////////////////////////////////////////
+//////////////// TODO ///////////////////////////////////
+////////////////////////////////////////////////////////
 type SendVideoRequest struct{}
 
 // Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document).
@@ -461,20 +463,30 @@ func (bot *Bot) SendVideoNote(svnReq *SendVideoNoteRequest) (*en.Message, error)
 type SendMediaGroupRequest struct{}
 
 // Use this method to send a group of photos or videos as an album. On success, an array of the sent Messages is returned.
-func (bot *Bot) SendMediaGroup(smgReq *SendMediaGroupRequest) ([]*en.Message, error) {}
+func (bot *Bot) SendMediaGroup(smgReq *SendMediaGroupRequest) ([]*en.Message, error) {
+	var target []*en.Message
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.sendMediaGroup,
+		smgReq,
+		&target,
+	); postErr != nil {
+		return nil, postErr
+	}
+	return target, nil
+}
 
-type EditMessageLiveLocationRequest struct{}
-
-// Use this method to edit live location messages. A location can be edited until its live_period expires or editing
-// is explicitly disabled by a call to stopMessageLiveLocation. On success, if the edited message was sent by the bot,
-// the edited Message is returned, otherwise True is returned.
-func (bot *Bot) EditMessageLiveLocation(emllReq *EditMessageLiveLocationRequest) (zzz, error) {}
-
-type StopMessageLiveLocationRequest struct{}
-
-// Use this method to stop updating a live location message before live_period expires. On success, if the message was
-// sent by the bot, the sent Message is returned, otherwise True is returned.
-func (bot *Bot) StopMessageLiveLocation(smllReq *StopMessageLiveLocationRequest) (zzz, error) {}
+//type EditMessageLiveLocationRequest struct{}
+//
+//// Use this method to edit live location messages. A location can be edited until its live_period expires or editing
+//// is explicitly disabled by a call to stopMessageLiveLocation. On success, if the edited message was sent by the bot,
+//// the edited Message is returned, otherwise True is returned.
+//func (bot *Bot) EditMessageLiveLocation(emllReq *EditMessageLiveLocationRequest) (zzz, error) {}
+//
+//type StopMessageLiveLocationRequest struct{}
+//
+//// Use this method to stop updating a live location message before live_period expires. On success, if the message was
+//// sent by the bot, the sent Message is returned, otherwise True is returned.
+//func (bot *Bot) StopMessageLiveLocation(smllReq *StopMessageLiveLocationRequest) (zzz, error) {}
 
 type SendVenueRequest struct{}
 
@@ -576,7 +588,17 @@ type ExportChatInviteLinkRequest struct{}
 // Use this method to generate a new invite link for a chat; any previously generated link is revoked. The bot must
 // be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite
 // link as String on success.
-func (bot *Bot) ExportChatInviteLink(ecilReq *ExportChatInviteLinkRequest) (string, error) {}
+func (bot *Bot) ExportChatInviteLink(ecilReq *ExportChatInviteLinkRequest) (string, error) {
+	var target string
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.exportChatInviteLink,
+		ecilReq,
+		&target,
+	); postErr != nil {
+		return "", postErr
+	}
+	return target, nil
+}
 
 type SetChatPhotoRequest struct{}
 
@@ -675,17 +697,46 @@ type GetChatAdministratorsRequest struct{}
 // contains information about all chat administrators except other bots. If the chat is a group or a supergroup and
 // no administrators were appointed, only the creator will be returned.
 func (bot *Bot) GetChatAdministrators(gcaReq *GetChatAdministratorsRequest) ([]*en.ChatMember, error) {
+	var target []*en.ChatMember
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.getChatAdministrators,
+		gcaReq,
+		&target,
+	); postErr != nil {
+		return nil, postErr
+	}
+	return target, nil
 }
 
 type GetChatMembersCountRequest struct{}
 
 // Use this method to get the number of members in a chat. Returns Int on success.
-func (bot *Bot) GetChatMembersCount(gcmcReq *GetChatMembersCountRequest) (int, error) {}
+func (bot *Bot) GetChatMembersCount(gcmcReq *GetChatMembersCountRequest) (int, error) {
+	var target int
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.getChatMembersCount,
+		gcmcReq,
+		&target,
+	); postErr != nil {
+		return 0, postErr
+	}
+	return target, nil
+}
 
 type GetChatMemberRequest struct{}
 
 // Use this method to get information about a member of a chat. Returns a ChatMember object on success.
-func (bot *Bot) GetChatMember(gcmemReq *GetChatMemberRequest) (*en.ChatMember, error) {}
+func (bot *Bot) GetChatMember(gcmemReq *GetChatMemberRequest) (*en.ChatMember, error) {
+	var target en.ChatMember
+	if postErr := bot.requestGate.makePostRequest(
+		bot.urls.getChatMember,
+		gcmemReq,
+		&target,
+	); postErr != nil {
+		return nil, postErr
+	}
+	return &target, nil
+}
 
 type SetChatStickerSetRequest struct{}
 
@@ -719,25 +770,25 @@ func (bot *Bot) DeleteChatStickerSet(dcstReq *DeleteChatStickerSetRequest) (bool
 	return true, nil
 }
 
-type EditMessageTextRequest struct{}
-
-// Use this method to edit text and game messages. On success, if edited message is sent by the bot, the edited
-// Message is returned, otherwise True is returned.
-func (bot *Bot) EditMessageText(emtReq *EditMessageTextRequest) (zzz, error) {}
-
-type EditMessageCaptionRequest struct{}
-
-// Use this method to edit captions of messages. On success, if edited message is sent by the bot, the edited
-// Message is returned, otherwise True is returned.
-func (bot *Bot) EditMessageCaption(emcReq *EditMessageCaptionRequest) (zzz, error) {}
-
-type EditMessageMediaRequest struct{}
-
-// Use this method to edit animation, audio, document, photo, or video messages. If a message is a part of a message
-// album, then it can be edited only to a photo or a video. Otherwise, message type can be changed arbitrarily. When
-// inline message is edited, new file can't be uploaded. Use previously uploaded file via its file_id or specify a URL.
-// On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
-func (bot *Bot) EditMessageMedia(emmReq *EditMessageMediaRequest) (zzz, error) {}
+//type EditMessageTextRequest struct{}
+//
+//// Use this method to edit text and game messages. On success, if edited message is sent by the bot, the edited
+//// Message is returned, otherwise True is returned.
+//func (bot *Bot) EditMessageText(emtReq *EditMessageTextRequest) (zzz, error) {}
+//
+//type EditMessageCaptionRequest struct{}
+//
+//// Use this method to edit captions of messages. On success, if edited message is sent by the bot, the edited
+//// Message is returned, otherwise True is returned.
+//func (bot *Bot) EditMessageCaption(emcReq *EditMessageCaptionRequest) (zzz, error) {}
+//
+//type EditMessageMediaRequest struct{}
+//
+//// Use this method to edit animation, audio, document, photo, or video messages. If a message is a part of a message
+//// album, then it can be edited only to a photo or a video. Otherwise, message type can be changed arbitrarily. When
+//// inline message is edited, new file can't be uploaded. Use previously uploaded file via its file_id or specify a URL.
+//// On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+//func (bot *Bot) EditMessageMedia(emmReq *EditMessageMediaRequest) (zzz, error) {}
 
 type DeleteMessageRequest struct{}
 
