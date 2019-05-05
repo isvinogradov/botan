@@ -1,9 +1,11 @@
 # BOTAN
 Tools for creating bots using Telegram Bot API
 
+### Done
+  - ~~ChatId can be `int` or `string` (implement interface with `toString` method?)~~
+
 ### Testing
   - add support for proxy in `transport` -> TEST IT
-  - ChatId can be `int` or `string` (implement interface with `toString` method?) TEST IT
 
 ### TODO
   - send HTTP requests in goroutines (what for?)

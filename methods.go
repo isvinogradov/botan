@@ -21,7 +21,7 @@ func (bot *Bot) GetMe() (*en.User, error) {
 // Use this method to send text messages. On success, the sent Message is returned.
 // todo check parsemode
 type SendMessageRequest struct {
-	ChatId                int             `json:"chat_id"`                            // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+	ChatId                interface{}     `json:"chat_id"`                            // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
 	Text                  string          `json:"text"`                               // Text of the message to be sent
 	ParseMode             string          `json:"parse_mode,omitempty"`               // Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
 	ReplyMarkup           *en.ReplyMarkup `json:"reply_markup,omitempty"`             // Optional. Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
@@ -46,7 +46,7 @@ func (bot *Bot) SendMessage(msg *SendMessageRequest) (*en.Message, error) {
 // Use this method to send photos. On success, the sent Message is returned.
 // todo: Photo can be InputFile
 type SendPhotoRequest struct {
-	ChatId              int             `json:"chat_id"`                        // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+	ChatId              interface{}     `json:"chat_id"`                        // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
 	Photo               string          `json:"photo"`                          // Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo using multipart/form-data
 	Caption             string          `json:"caption,omitempty"`              // Optional. Photo caption (may also be used when resending photos by file_id), 0-1024 characters
 	ParseMode           string          `json:"parse_mode,omitempty"`           // Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
@@ -91,7 +91,7 @@ func (bot *Bot) AnswerCallbackQuery(answerCbQ *AnswerCallbackQueryRequest) (bool
 // Use this method to edit only the reply markup of messages sent by the bot or via the bot (for inline bots).
 // On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
 type EditMessageReplyMarkupRequest struct {
-	ChatId          int                      `json:"chat_id,omitempty"`           // Optional  Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+	ChatId          interface{}              `json:"chat_id,omitempty"`           // Optional  Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
 	MessageId       int                      `json:"message_id,omitempty"`        // Optional  Required if inline_message_id is not specified. Identifier of the sent message
 	InlineMessageId string                   `json:"inline_message_id,omitempty"` // Optional  Required if chat_id and message_id are not specified. Identifier of the inline message
 	ReplyMarkup     *en.InlineKeyboardMarkup `json:"reply_markup,omitempty"`      // Optional  A JSON-serialized object for an inline keyboard.
@@ -142,8 +142,8 @@ func (bot *Bot) AnswerInlineQuery(answer *AnswerInlineQueryRequest) (bool, error
 // action = upload_photo. The user will see a “sending photo” status for the bot.
 // todo check action
 type SendChatActionRequest struct {
-	ChatId int    `json:"chat_id"` // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-	Action string `json:"action"`  // Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_audio or upload_audio for audio files, upload_document for general files, find_location for location data, record_video_note or upload_video_note for video notes.
+	ChatId interface{} `json:"chat_id"` // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+	Action string      `json:"action"`  // Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for text messages, upload_photo for photos, record_video or upload_video for videos, record_audio or upload_audio for audio files, upload_document for general files, find_location for location data, record_video_note or upload_video_note for video notes.
 }
 
 func (bot *Bot) SendChatAction(chatAction *SendChatActionRequest) (bool, error) {
@@ -160,7 +160,7 @@ func (bot *Bot) SendChatAction(chatAction *SendChatActionRequest) (bool, error) 
 // Use this method to send a native poll. A native poll can't be sent to a private chat.
 // On success, the sent Message is returned.
 type SendPollRequest struct {
-	ChatId              int             `json:"chat_id"`                        // Unique identifier for the target chat or username of the target channel (in the format @channelusername). A native poll can't be sent to a private chat.
+	ChatId              interface{}     `json:"chat_id"`                        // Unique identifier for the target chat or username of the target channel (in the format @channelusername). A native poll can't be sent to a private chat.
 	Question            string          `json:"question"`                       // Poll question, 1-255 characters
 	Options             []string        `json:"options"`                        // List of answer options, 2-10 strings 1-100 characters each
 	DisableNotification bool            `json:"disable_notification,omitempty"` // Optional 	Sends the message silently. Users will receive a notification with no sound.
@@ -183,7 +183,7 @@ func (bot *Bot) SendPoll(poll *SendPollRequest) (*en.Message, error) {
 // Use this method to stop a poll which was sent by the bot.
 // On success, the stopped Poll with the final results is returned.
 type StopPollRequest struct {
-	ChatId      int                      `json:"chat_id"`                // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+	ChatId      interface{}              `json:"chat_id"`                // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
 	MessageId   int                      `json:"message_id"`             // Identifier of the original message with the poll
 	ReplyMarkup *en.InlineKeyboardMarkup `json:"reply_markup,omitempty"` // Optional 	A JSON-serialized object for a new message inline keyboard.
 }
@@ -203,7 +203,7 @@ func (bot *Bot) StopPoll(poll *StopPollRequest) (*en.Poll, error) {
 // Use this method to send .webp stickers. On success, the sent Message is returned.
 // todo sticker=InputFile
 type SendStickerRequest struct {
-	ChatId              int             `json:"chat_id"`                        // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+	ChatId              interface{}     `json:"chat_id"`                        // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
 	Sticker             string          `json:"sticker"`                        // Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .webp file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
 	DisableNotification bool            `json:"disable_notification,omitempty"` // Optional 	Sends the message silently. Users will receive a notification with no sound.
 	ReplyToMessageId    int             `json:"reply_to_message_id,omitempty"`  // Optional 	If the message is a reply, ID of the original message
@@ -225,7 +225,7 @@ func (bot *Bot) SendSticker(stickerReq *SendStickerRequest) (*en.Message, error)
 // Use this method to get up to date information about the chat (current name of the user for one-on-one
 // conversations, current username of a user, group or channel, etc.). Returns a Chat object on success.
 type GetChatRequest struct {
-	ChatId int `json:"chat_id"` // Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
+	ChatId interface{} `json:"chat_id"` // Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
 }
 
 func (bot *Bot) GetChat(getChatReq *GetChatRequest) (*en.Chat, error) {
@@ -261,10 +261,10 @@ func (bot *Bot) GetUserProfilePhotos(getPhotReq *GetUserProfilePhotosRequest) (*
 
 // Use this method to forward messages of any kind. On success, the sent Message is returned.
 type ForwardMessageRequest struct {
-	ChatId              int  `json:"chat_id"`                        // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-	FromChatId          int  `json:"from_chat_id"`                   // Unique identifier for the chat where the original message was sent (or channel username in the format @channelusername)
-	DisableNotification bool `json:"disable_notification,omitempty"` // Optional 	Sends the message silently. Users will receive a notification with no sound.
-	MessageId           int  `json:"message_id"`                     // Message identifier in the chat specified in from_chat_id
+	ChatId              interface{} `json:"chat_id"`                        // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+	FromChatId          interface{} `json:"from_chat_id"`                   // Unique identifier for the chat where the original message was sent (or channel username in the format @channelusername)
+	DisableNotification bool        `json:"disable_notification,omitempty"` // Optional 	Sends the message silently. Users will receive a notification with no sound.
+	MessageId           int         `json:"message_id"`                     // Message identifier in the chat specified in from_chat_id
 }
 
 func (bot *Bot) ForwardMessage(fwdMsgReq *ForwardMessageRequest) (*en.Message, error) {
@@ -284,8 +284,8 @@ func (bot *Bot) ForwardMessage(fwdMsgReq *ForwardMessageRequest) (*en.Message, e
 // Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting
 // is off in the target group.
 type SetChatTitleRequest struct {
-	ChatId int    `json:"chat_id"` // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-	Title  string `json:"title"`   // New chat title, 1-255 characters
+	ChatId interface{} `json:"chat_id"` // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+	Title  string      `json:"title"`   // New chat title, 1-255 characters
 }
 
 func (bot *Bot) SetChatTitle(setChatTReq *SetChatTitleRequest) (bool, error) {
@@ -303,7 +303,7 @@ func (bot *Bot) SetChatTitle(setChatTReq *SetChatTitleRequest) (bool, error) {
 // is returned. Bots can currently send animation files of up to 50 MB in size, this limit may be changed in the future.
 // todo: thumb/animation can be InputFile
 type SendAnimationRequest struct {
-	ChatId              int             `json:"chat_id"`                        // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+	ChatId              interface{}     `json:"chat_id"`                        // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
 	Animation           string          `json:"animation"`                      // Animation to send. Pass a file_id as String to send an animation that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an animation from the Internet, or upload a new animation using multipart/form-data. More info on Sending Files »
 	Duration            int             `json:"duration,omitempty"`             // Optional 	Duration of sent animation in seconds
 	Width               int             `json:"width,omitempty"`                // Optional 	Animation width
@@ -333,7 +333,7 @@ func (bot *Bot) SendAnimation(sendAnReq *SendAnimationRequest) (*en.Message, err
 // Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up
 // to 50 MB in size, this limit may be changed in the future.
 type SendVoiceRequest struct {
-	ChatId              int             `json:"chat_id"`                        // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+	ChatId              interface{}     `json:"chat_id"`                        // Unique identifier for the target chat or username of the target channel (in the format @channelusername)
 	Voice               string          `json:"voice"`                          // Audio file to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
 	Caption             string          `json:"caption,omitempty"`              // Optional 	Voice message caption, 0-1024 characters
 	ParseMode           string          `json:"parse_mode,omitempty"`           // Optional 	Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
