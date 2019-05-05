@@ -410,7 +410,8 @@ type SendDocumentRequest struct {
 	ReplyMarkup         *en.ReplyMarkup `json:"reply_markup,omitempty"`         // Optional 	Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
 }
 
-// Use this method to send general files. On success, the sent Message is returned. Bots can currently send files of any type of up to 50 MB in size, this limit may be changed in the future.
+// Use this method to send general files. On success, the sent Message is returned. Bots can currently send files
+// of any type of up to 50 MB in size, this limit may be changed in the future.
 func (bot *Bot) SendDocument(sendDocReq *SendDocumentRequest) (*en.Message, error) {
 	var target en.Message
 	if postErr := bot.requestGate.makePostRequest(
