@@ -67,10 +67,10 @@ func (rg *requestGate) makePostRequest(url string, payload interface{}, target i
 
 	// make HTTP request
 	r, errMakePost := rg.postClient.Post(url, "application/json", bytes.NewBuffer(jsonPayload))
-	defer closeBody(r)
 	if errMakePost != nil {
 		return errMakePost
 	}
+	defer closeBody(r)
 	if r.StatusCode != http.StatusOK {
 		bodyBytes, err := ioutil.ReadAll(r.Body)
 		if err != nil {
@@ -120,10 +120,10 @@ func (rg *requestGate) makePostRequest(url string, payload interface{}, target i
 // for getUpdates
 func (rg *requestGate) makeGetRequest(url string, target interface{}) error {
 	r, err := rg.getClient.Get(url) // long polling
-	defer closeBody(r)
 	if err != nil {
 		return err
 	}
+	defer closeBody(r)
 
 	if r.StatusCode != http.StatusOK {
 		return errors.New("> wrong getUpdates response status code")
